@@ -1,32 +1,35 @@
-package com.bears.projectrunner;
+package com.bears.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import com.bears.util.Pair;
 
 public class TestCondition {
     private final int weightCapacity;
+
+
     private final int knapsackNumber;
-    private HashMap<Integer, Integer> weightProfitMapping;
+    protected Pair[] weightProfitMapping;
 
 
-    public TestCondition(int knapsackNumber, int weightCapacity) {
-        weightProfitMapping = new HashMap<>();
+    public TestCondition(int knapsackNumber, int weightCapacity, int size) {
         this.knapsackNumber = knapsackNumber;
         this.weightCapacity = weightCapacity;
+        weightProfitMapping = new Pair[size];
     }
 
-
-
-    public void enterWeightProfitMapping(int weight, int profit){
-        this.weightProfitMapping.put(weight, profit);
-    }
 
     public int getWeightCapacity() {
         return weightCapacity;
     }
 
 
-    public HashMap<Integer, Integer> getWeightProfitMapping() {
+    public Pair[] getWeightProfitMapping() {
         return weightProfitMapping;
+    }
+    public int getKnapsackNumber() {
+        return knapsackNumber;
     }
 
     @Override

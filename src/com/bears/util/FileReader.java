@@ -1,8 +1,5 @@
 package com.bears.util;
-import com.bears.projectrunner.TestCondition;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class FileReader {
@@ -50,11 +47,11 @@ public class FileReader {
         int[] profitArray = Arrays.stream(readInputs.get(1).split(",")).filter(FileReader::isDigit).mapToInt(Integer::parseInt).toArray();
         int[] weightArray = Arrays.stream(readInputs.get(2).split(",")).filter(FileReader::isDigit).mapToInt(Integer::parseInt).toArray();
 
-        TestCondition condition = new TestCondition(knapsackNumber, weightCapacity);
+        TestCondition condition = new TestCondition(knapsackNumber, weightCapacity, profitArray.length);
         for (int i = 0; i < profitArray.length; i++){
             int profit = profitArray[i];
             int weight = weightArray[i];
-            condition.enterWeightProfitMapping(weight, profit);
+            condition.weightProfitMapping[i] = new Pair(weight, profit);
         }
 
         testConditions.add(condition);
@@ -77,7 +74,10 @@ public class FileReader {
         FileReader reader = new FileReader("input");
         List<TestCondition> l1 = reader.getTestConditions();
         for (TestCondition test: l1){
-            System.out.println(test);
+            Pair[] pairs = test.weightProfitMapping;
+            for (Pair pair: pairs){
+                System.out.println(pair.getWeight() + "---" + pair.getProfit());
+            }
         }
 
 
