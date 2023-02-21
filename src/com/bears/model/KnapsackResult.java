@@ -5,22 +5,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class KnapsackResult {
-    private final int knapsackWeight;
-    private final int profit;
+
     private List<Pair> knapsack;
 
-    public KnapsackResult(int knapsackWeight, int profit){
-        this.knapsackWeight = knapsackWeight;
-        this.profit = profit;
+    public KnapsackResult(){
         this.knapsack = new LinkedList<>();
     }
 
     public int getKnapsackWeight() {
-        return knapsackWeight;
+        return knapsack.stream().map(Pair::getWeight).mapToInt(Integer::intValue).sum();
     }
 
     public int getProfit() {
-        return profit;
+        return knapsack.stream().map(Pair::getProfit).mapToInt(Integer::intValue).sum();
+    }
+
+    public void addPairing(int weight, int profit){
+        knapsack.add(new Pair(weight, profit));
     }
 
 
