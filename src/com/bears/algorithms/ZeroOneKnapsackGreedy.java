@@ -11,13 +11,14 @@ public class ZeroOneKnapsackGreedy {
         int currentCapacity = capacity;
 
         SortItems(weights, values, indices);
-
-        boolean filling = true;
-        int increment = weights.length - 1;
+        
         for (int i = values.length - 1; i >= 0; i--) {
             if (weights[i] <= currentCapacity) {
                 output.add(indices[i]);
                 currentCapacity -= weights[i];
+            }
+            if (currentCapacity == 0) {
+                break;
             }
         }
 
