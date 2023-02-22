@@ -63,9 +63,10 @@ public class ZeroOneKnapsackDynamicProgramming {
                 output.add(columnPosition);
                 columnPosition--;
                 rowPosition = rowPosition - weight;
-                if (rowPosition == 0) {
-                    filling = false;
-                }
+
+            }
+            if (rowPosition == 0 || columnPosition == 0) {
+                filling = false;
             }
         }
         return output;
