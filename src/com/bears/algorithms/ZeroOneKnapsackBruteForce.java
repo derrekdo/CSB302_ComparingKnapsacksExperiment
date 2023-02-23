@@ -1,21 +1,26 @@
 package com.bears.algorithms;
 
+import com.bears.model.IKnapsackSolver;
+import com.bears.model.KnapsackResult;
+import com.bears.util.Pair;
+
 import java.util.ArrayList;
 
-public class ZeroOneKnapsackBruteForce {
+public class ZeroOneKnapsackBruteForce implements IKnapsackSolver {
 
-    public static ArrayList<Integer> SolveKnapsack(int[] weights, int[] values, int[] indices, int capacity) {
+    public KnapsackResult solveKnapsackProblem(int weightLimit, Pair[] pairings) {
 
-        ArrayList<Integer> output = new ArrayList<Integer>();
+        KnapsackResult output = new KnapsackResult();
 
         int permutation = 1;
-        int[] permutationWord = new int[indices.length];
+        int[] permutationWord = new int[pairings.length];
 
         int highestValue = 0;
 
         int currentCapacity = 0;
         int currentValue = 0;
         ArrayList<Integer> currentItems = new ArrayList<Integer>();
+        ArrayList<Integer> bestItems = new ArrayList<Integer>();
 
         while (GenerateNextPermutation(permutationWord, permutation)) {
 
@@ -25,18 +30,22 @@ public class ZeroOneKnapsackBruteForce {
 
             for (int i = 0; i < permutationWord.length; i++) {
                 if (permutationWord[i] == 1) {
-                    currentCapacity += weights[i];
-                    currentValue += values[i];
-                    currentItems.add(indices[i]);
+                    currentCapacity += pairings[i].getWeight();
+                    currentValue += pairings[i].getProfit();
+                    currentItems.add(i + 1);
                 }
             }
-            if (currentCapacity <= capacity && currentValue > highestValue) {
-                highestValue = currentValue;
+            if (currentCapacity <= weightLimit && currentValue > highestValue) {
 
-                output.clear();
-                output.addAll(currentItems);
+                highestValue = currentValue;
+                bestItems.clear();
+                bestItems.addAll(currentItems);
             }
             permutation++;
+        }
+
+        for (int index : bestItems) {
+            output.addPairing(pairings[index]);
         }
 
         return output;
