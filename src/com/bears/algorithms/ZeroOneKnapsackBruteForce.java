@@ -7,6 +7,11 @@ import com.bears.util.Pair;
 import java.util.ArrayList;
 
 public class ZeroOneKnapsackBruteForce implements IKnapsackSolver {
+    String name = "01 Brute Force";
+
+    public String getSolverName() {
+        return name;
+    }
 
     public KnapsackResult solveKnapsackProblem(int weightLimit, Pair[] pairings) {
 
@@ -45,7 +50,7 @@ public class ZeroOneKnapsackBruteForce implements IKnapsackSolver {
         }
 
         for (int index : bestItems) {
-            output.addPairing(pairings[index]);
+            output.addPairing(pairings[index - 1]);
         }
 
         return output;

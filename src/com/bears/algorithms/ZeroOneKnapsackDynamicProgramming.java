@@ -1,22 +1,29 @@
 package com.bears.algorithms;
 
-import java.util.ArrayList;
+import com.bears.model.IKnapsackSolver;
+import com.bears.model.KnapsackResult;
+import com.bears.util.Pair;
 
-public class ZeroOneKnapsackDynamicProgramming {
+public class ZeroOneKnapsackDynamicProgramming implements IKnapsackSolver {
+    String name = "01 Dynamic Programming";
 
-    public static ArrayList<Integer> SolveKnapsack(int[] weights, int[] values, int capacity) {
+    public String getSolverName() {
+        return name;
+    }
 
-        ArrayList<Integer> output = new ArrayList<Integer>();
+    public KnapsackResult solveKnapsackProblem(int weightLimit, Pair[] pairings) {
 
-        int[][] dpTable = makeDPTable(weights, values, capacity);
-        output = traverseDPKnapSackTable(dpTable, weights);
+        KnapsackResult output = new KnapsackResult();
+
+        int[][] dpTable = makeDPTable(pairings, weightLimit);
+        output = traverseDPKnapSackTable(dpTable, pairings);
 
         return output;
     }
 
-    private static int[][] makeDPTable(int[] weights, int[] values, int capacity) {
+    private int[][] makeDPTable(Pair[] pairings, int capacity) {
 
-        int items = weights.length;
+        int items = pairings.length;
 
         //make a table to account for all possible solutions
         // fill the first row with 0s
@@ -34,21 +41,21 @@ public class ZeroOneKnapsackDynamicProgramming {
          */
         for (int i = 1; i <= items; i++) {
             for (int j = 1; j <= capacity; j++) {
-                if (j - weights[i - 1] < 0) { //check before hand if we are OOB on that right hand
+                if (j - pairings[i - 1].getWeight() < 0) { //check before hand if we are OOB on that right hand
                     table[i][j] = table[i - 1][j];
                 } else {
                     table[i][j] = Math.max(
                             table[i - 1][j],
-                            table[i - 1][j - weights[i - 1]] + values[i - 1]);
+                            table[i - 1][j - pairings[i - 1].getWeight()] + pairings[i - 1].getProfit());
                 }
             }
         }
         return table;
     }
 
-    private static ArrayList<Integer> traverseDPKnapSackTable(int[][] table, int[] weights) {
+    private static KnapsackResult traverseDPKnapSackTable(int[][] table, Pair[] pairings) {
 
-        ArrayList<Integer> output = new ArrayList<Integer>();
+        KnapsackResult output = new KnapsackResult();
 
         boolean filling = true;
         int columnPosition = table.length - 1;
@@ -59,8 +66,8 @@ public class ZeroOneKnapsackDynamicProgramming {
             if (table[columnPosition][rowPosition] == table[columnPosition - 1][rowPosition]) {
                 columnPosition--;
             } else {
-                int weight = weights[columnPosition - 1];
-                output.add(columnPosition);
+                int weight = pairings[columnPosition - 1].getWeight();
+                output.addPairing(pairings[columnPosition - 1]);
                 columnPosition--;
                 rowPosition = rowPosition - weight;
 
