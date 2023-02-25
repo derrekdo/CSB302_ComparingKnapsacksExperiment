@@ -1,21 +1,28 @@
 package com.bears.algorithms;
 
-import java.util.ArrayList;
+import com.bears.model.IKnapsackSolver;
+import com.bears.model.KnapsackResult;
+import com.bears.util.Pair;
 
-public class ZeroOneKnapsackGreedy {
+public class ZeroOneKnapsackGreedy implements IKnapsackSolver {
+    String name = "01 Greedy";
 
-    public static ArrayList<Integer> SolveKnapsack(int[] weights, int[] values, int[] indices, int capacity) {
+    public String getSolverName() {
+        return name;
+    }
 
-        ArrayList<Integer> output = new ArrayList<Integer>();
+    public KnapsackResult solveKnapsackProblem(int weightLimit, Pair[] pairings) {
 
-        int currentCapacity = capacity;
+        KnapsackResult output = new KnapsackResult();
 
-        SortItems(weights, values, indices);
-        
-        for (int i = values.length - 1; i >= 0; i--) {
-            if (weights[i] <= currentCapacity) {
-                output.add(indices[i]);
-                currentCapacity -= weights[i];
+        int currentCapacity = weightLimit;
+
+        SortItems(pairings);
+
+        for (int i = pairings.length - 1; i >= 0; i--) {
+            if (pairings[i].getWeight() <= currentCapacity) {
+                output.addPairing(pairings[i]);
+                currentCapacity -= pairings[i].getWeight();
             }
             if (currentCapacity == 0) {
                 break;
@@ -25,34 +32,26 @@ public class ZeroOneKnapsackGreedy {
         return output;
     }
 
-    //sorts the values in descending order. also reorganizes the weights to match the ordering of the values
-    private static void SortItems(int[] weights, int[] values, int[] indices) {
+    //sorts the items so that we can find the highest values ones in the solver function
+    private void SortItems(Pair[] pairings) {
 
         //outer loop through the entire array
-        for (int i = 0; i < values.length; i++) {
+        for (int i = 0; i < pairings.length; i++) {
 
             //set up a variable for tracking the index of the smallest index we find in the inner loop
             int smallestIndex = i;
 
             // innner loop through the rest of the array.
-            for (int j = i + 1; j < values.length; j++) {
-                if (values[j] < values[smallestIndex]) { // if the inner loop finds a smaller value update the smallest tracker
+            for (int j = i + 1; j < pairings.length; j++) {
+                if (pairings[j].getProfit() < pairings[smallestIndex].getProfit()) { // if the inner loop finds a smaller value update the smallest tracker
                     smallestIndex = j;
                 }
             }
 
             //after the inner loop swap the value at the outer loop's index with the smallest we found with the inner loop
-            int tempIndex = indices[i];
-            int tempValue = values[i];
-            int tempWeight = weights[i];
-
-            indices[i] = indices[smallestIndex];
-            values[i] = values[smallestIndex];
-            weights[i] = weights[smallestIndex];
-
-            indices[smallestIndex] = tempIndex;
-            values[smallestIndex] = tempValue;
-            weights[smallestIndex] = tempWeight;
+            Pair tempPair = pairings[i];
+            pairings[i] = pairings[smallestIndex];
+            pairings[smallestIndex] = tempPair;
         }
     }
 }
