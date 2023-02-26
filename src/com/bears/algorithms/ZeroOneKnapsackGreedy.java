@@ -4,6 +4,7 @@ import com.bears.model.IKnapsackSolver;
 import com.bears.model.KnapsackResult;
 import com.bears.util.Pair;
 
+
 public class ZeroOneKnapsackGreedy implements IKnapsackSolver {
     String name = "01 Greedy";
 
@@ -11,14 +12,24 @@ public class ZeroOneKnapsackGreedy implements IKnapsackSolver {
         return name;
     }
 
+    /**
+     * Greedy approach to 01 knapsack. Sorts items by value so that we know were the most valuable are then takes them
+     * until the knapsack is full.
+     *
+     * @param weightLimit the capacity of the knapsack
+     * @param pairings    an array of item weight+value pairs
+     * @return A knapsack result with weight+value pairs
+     */
     public KnapsackResult solveKnapsackProblem(int weightLimit, Pair[] pairings) {
 
         KnapsackResult output = new KnapsackResult();
 
         int currentCapacity = weightLimit;
 
+        //sort items by value
         SortItems(pairings);
 
+        //go through and find the most valuable that we can fit into teh knapsack
         for (int i = pairings.length - 1; i >= 0; i--) {
             if (pairings[i].getWeight() <= currentCapacity) {
                 output.addPairing(pairings[i]);
@@ -30,7 +41,7 @@ public class ZeroOneKnapsackGreedy implements IKnapsackSolver {
         }
 
         return output;
-    }
+    }//O(n^2) because we use selection sort
 
     //sorts the items so that we can find the highest values ones in the solver function
     private void SortItems(Pair[] pairings) {
@@ -53,5 +64,5 @@ public class ZeroOneKnapsackGreedy implements IKnapsackSolver {
             pairings[i] = pairings[smallestIndex];
             pairings[smallestIndex] = tempPair;
         }
-    }
+    }//O(n^2) selection sort
 }
