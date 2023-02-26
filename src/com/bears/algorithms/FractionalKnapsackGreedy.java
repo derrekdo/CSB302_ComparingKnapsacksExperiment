@@ -4,10 +4,7 @@ import com.bears.model.IKnapsackSolver;
 import com.bears.model.KnapsackResult;
 import com.bears.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.TreeMap;
+import java.util.*;
 
 public class FractionalKnapsackGreedy implements IKnapsackSolver {
 
@@ -29,41 +26,48 @@ public class FractionalKnapsackGreedy implements IKnapsackSolver {
         int currentWeight = 0;
         int size = pairings.length;
 
-        //TreeMap to hold the ratio's of each item in a descending order
-        TreeMap<Double, Integer> set = new TreeMap<>();
-        //loops through each pair and calculates the ratio and adds it to the treemap
+        //Treeset to hold the ratio's of each item in a descending order
+        TreeSet<Double> itemRatios = new TreeSet<>();
+        //holds the ratios in an array list unsorted, to get the index of the first instance the ratio appears
+        ArrayList<Double> ratioIndex = new ArrayList<>();
+        //loops through each pair and calculates the ratio and adds it to a tree set and array list
         for(int i = 0; i < size; i++){
             double ratio  = Math.round(((double)pairings[i].getProfit() / (double)pairings[i].getWeight())*100)/100.0;
-            set.put(ratio, i);
+            itemRatios.add(ratio);
+            ratioIndex.add(i, ratio);
         }
 
         //iterator is then used to iterate through each item
-        Iterator ratios = set.descendingKeySet().iterator();
+        Iterator ratios = itemRatios.descendingIterator();
         //checks if the capacity has been reached and there are any items left
         while(ratios.hasNext() && currentWeight != weightLimit){
             //holds the current ratio
             double current = (double) ratios.next();
-            //finds the index of the item with the ratio
-            int index = set.get(current);
-            //gets the weight  of the item
-            int itemWeight = pairings[index].getWeight();
-            //checks if the next item exceeds the capacity
-            if (currentWeight + itemWeight < weightLimit) {
-                //if it does not exceed, the item can be taken
-                currentWeight += itemWeight;
-                output.addPairing(pairings[set.get(current)]);
-            }else{
-                //if it exceeds the capacity, only a portion of the item is taken
-                //remaining capacity
-                int remainingWeight = weightLimit - currentWeight;
-                //the amount of the item that can be taken
-                double value = current * remainingWeight;
-                currentWeight += remainingWeight;
-                output.addPairing(remainingWeight, (int)value);
+            //if there are multiple items with the same ratio, as many will be taken w/o exceeding the capacity
+            while(ratioIndex.contains(current) && currentWeight != weightLimit) {
+                //finds the index of the item with the ratio
+                int index = ratioIndex.indexOf(current);
+                //gets the weight  of the item
+                int itemWeight = pairings[index].getWeight();
+                //checks if the next item exceeds the capacity
+                if (currentWeight + itemWeight < weightLimit) {
+                    //if it does not exceed, the item can be taken
+                    currentWeight += itemWeight;
+                    output.addPairing(pairings[index]);
+                } else {
+                    //if it exceeds the capacity, only a portion of the item is taken
+                    //remaining capacity
+                    int remainingWeight = weightLimit - currentWeight;
+                    //the amount of the item that can be taken
+                    double value = current * remainingWeight;
+                    currentWeight += remainingWeight;
+                    output.addPairing(remainingWeight, (int) value);
+                }
+                //the ratio at current index is not removed but set to null
+                //prevents the same item from being taken if there are multiple items with the same ratio
+                ratioIndex.set(index, null);
             }
         }
         return output;
     }
-
-
 }
