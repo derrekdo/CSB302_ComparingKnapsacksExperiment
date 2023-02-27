@@ -41,6 +41,7 @@ public class Main {
 
         int capacity = 9;
 
+        //expected items: 0,1,3 weights: 3,2,4 values: 16,17,22
         for (IKnapsackSolver solver : solverList) {
             System.out.println("Solving..." + solver.getSolverName());
             KnapsackResult result = solver.solveKnapsackProblem(capacity, pairing);
@@ -48,8 +49,8 @@ public class Main {
         }
 
         // more advanced test using larger item + weight sets from the project csv file
-        int[] fileV = {106, 92, 90, 142, 85, 128, 124, 30, 126, 26, 179, 109, 84, 87, 13};
-        int[] fileW = {65, 9, 121, 174, 188, 148, 57, 148, 79, 140, 104, 57, 67, 87, 46};
+        int[] fileW = {106, 92, 90, 142, 85, 128, 124, 30, 126, 26, 179, 109, 84, 87, 13};
+        int[] fileV = {65, 9, 121, 174, 188, 148, 57, 148, 79, 140, 104, 57, 67, 87, 46};
         Pair[] filePairs = new Pair[fileW.length];
 
         for (int i = 0; i < filePairs.length; i++) {
@@ -57,6 +58,7 @@ public class Main {
         }
         int fileCap = 100;
 
+        // expected items: 7, 9, 14 weights: 30, 26, 13 values: 148, 140, 46
         for (IKnapsackSolver solver : solverList) {
             System.out.println("Solving..." + solver.getSolverName());
             KnapsackResult result = solver.solveKnapsackProblem(fileCap, filePairs);
@@ -72,7 +74,7 @@ public class Main {
             greedyPairs[i] = new Pair(greedyW[i], greedyV[i]);
         }
         int greedyCap = 10;
-
+        // expected: greedy: only the last item. brute force/ DP: everything else
         for (IKnapsackSolver solver : solverList) {
             System.out.println("Solving..." + solver.getSolverName());
             KnapsackResult result = solver.solveKnapsackProblem(greedyCap, greedyPairs);
