@@ -2,37 +2,36 @@ package com.bears.model;
 
 import com.bears.util.Pair;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class KnapsackResult {
 
-    private List<Pair> knapsack;
+    double profit;
+    double weight;
 
-    public KnapsackResult() {
-        this.knapsack = new LinkedList<>();
+    List<Integer> knapsack;
+
+    public KnapsackResult(){
+        profit = 0.0;
+        weight = 0.0;
+        knapsack = new ArrayList<>();
     }
 
-    public int getKnapsackWeight() {
-        return knapsack.stream().map(Pair::getWeight).mapToInt(Integer::intValue).sum();
+    public double getProfit() {
+        return profit;
     }
 
-    public int getProfit() {
-        return knapsack.stream().map(Pair::getProfit).mapToInt(Integer::intValue).sum();
+    public double getWeight() {
+        return weight;
     }
 
-    public void addPairing(int weight, int profit) {
-        knapsack.add(new Pair(weight, profit));
+    public List<Integer> getKnapsack(){
+        return knapsack;
     }
 
-    public void addPairing(Pair pair) {
-        knapsack.add(pair);
-    }
 
-    public void printResult() {
-        for (Pair pair : knapsack) {
-            System.out.println(pair.toString());
-        }
-    }
+
 
 }
