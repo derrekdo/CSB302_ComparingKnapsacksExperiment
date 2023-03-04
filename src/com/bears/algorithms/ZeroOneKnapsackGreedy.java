@@ -4,6 +4,8 @@ import com.bears.model.IKnapsackSolver;
 import com.bears.model.KnapsackResult;
 import com.bears.util.Pair;
 
+import java.util.ArrayList;
+
 
 public class ZeroOneKnapsackGreedy implements IKnapsackSolver {
     String name = "01 Greedy";
@@ -22,7 +24,7 @@ public class ZeroOneKnapsackGreedy implements IKnapsackSolver {
      */
     public KnapsackResult solveKnapsackProblem(int weightLimit, Pair[] pairings) {
 
-        KnapsackResult output = new KnapsackResult();
+        KnapsackResult output;
 
         int currentCapacity = weightLimit;
 
@@ -30,16 +32,21 @@ public class ZeroOneKnapsackGreedy implements IKnapsackSolver {
         SortItems(pairings);
 
         //go through and find the most valuable that we can fit into teh knapsack
+        int totalWeight = 0;
+        int totalValue = 0;
+        ArrayList<Integer> weights = new ArrayList<Integer>();
         for (int i = pairings.length - 1; i >= 0; i--) {
             if (pairings[i].getWeight() <= currentCapacity) {
-                output.addPairing(pairings[i]);
+                totalWeight += pairings[i].getWeight();
+                weights.add(pairings[i].getWeight());
+                totalValue += pairings[i].getProfit();
                 currentCapacity -= pairings[i].getWeight();
             }
             if (currentCapacity == 0) {
                 break;
             }
         }
-
+        output = new KnapsackResult(totalValue, totalWeight, weights);
         return output;
     }//O(n^2) because we use selection sort
 

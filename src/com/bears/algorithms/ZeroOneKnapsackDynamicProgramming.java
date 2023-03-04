@@ -4,6 +4,8 @@ import com.bears.model.IKnapsackSolver;
 import com.bears.model.KnapsackResult;
 import com.bears.util.Pair;
 
+import java.util.ArrayList;
+
 public class ZeroOneKnapsackDynamicProgramming implements IKnapsackSolver {
     String name = "01 Dynamic Programming";
 
@@ -21,7 +23,7 @@ public class ZeroOneKnapsackDynamicProgramming implements IKnapsackSolver {
      */
     public KnapsackResult solveKnapsackProblem(int weightLimit, Pair[] pairings) {
 
-        KnapsackResult output = new KnapsackResult();
+        KnapsackResult output;
 
         int[][] dpTable = makeDPTable(pairings, weightLimit);
         output = traverseDPKnapSackTable(dpTable, pairings);
@@ -78,7 +80,7 @@ public class ZeroOneKnapsackDynamicProgramming implements IKnapsackSolver {
      */
     private KnapsackResult traverseDPKnapSackTable(int[][] table, Pair[] pairings) {
 
-        KnapsackResult output = new KnapsackResult();
+        KnapsackResult output;
 
         // indefinite loop because we don't know how many items can be in the best combination
         boolean filling = true;
@@ -90,13 +92,20 @@ public class ZeroOneKnapsackDynamicProgramming implements IKnapsackSolver {
          * Check the value above us in the table. If it's different than the value at our current cell add the current
          * row's item to the knapsack and move over one column. Repeat until we reach the top or left side of the table.
          */
+
+        int totalWeight = 0;
+        int totalValue = 0;
+        ArrayList<Integer> weights = new ArrayList<Integer>();
+
         while (filling) {
 
             if (table[columnPosition][rowPosition] == table[columnPosition - 1][rowPosition]) {
                 columnPosition--;
             } else {
                 int weight = pairings[columnPosition - 1].getWeight();
-                output.addPairing(pairings[columnPosition - 1]);
+                totalWeight += weight;
+                totalValue += pairings[columnPosition - 1].getProfit();
+                weights.add(weight);
                 columnPosition--;
                 rowPosition = rowPosition - weight;
 
@@ -105,6 +114,7 @@ public class ZeroOneKnapsackDynamicProgramming implements IKnapsackSolver {
                 filling = false;
             }
         }
+        output = new KnapsackResult(totalValue, totalWeight, weights);
         return output;
     }
 }

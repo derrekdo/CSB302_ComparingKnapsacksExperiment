@@ -23,7 +23,7 @@ public class ZeroOneKnapsackBruteForce implements IKnapsackSolver {
      */
     public KnapsackResult solveKnapsackProblem(int weightLimit, Pair[] pairings) {
 
-        KnapsackResult output = new KnapsackResult();
+        KnapsackResult output;
 
         int iteration = 1;
         int[] permutationWord = new int[pairings.length];
@@ -66,9 +66,16 @@ public class ZeroOneKnapsackBruteForce implements IKnapsackSolver {
         }
 
         //add the best pairings to the output
+        int totalWeight = 0;
+        int totalValue = 0;
+        ArrayList<Integer> weights = new ArrayList<Integer>();
         for (int index : bestItems) {
-            output.addPairing(pairings[index - 1]);
+
+            totalWeight += pairings[index - 1].getWeight();
+            totalValue += pairings[index - 1].getProfit();
+            weights.add(pairings[index - 1].getWeight());
         }
+        output = new KnapsackResult(totalValue, totalWeight, weights);
 
         return output;
     }// O(2^n) because permutations = 2 ^ number of items
