@@ -13,10 +13,10 @@ public class KnapsackResult {
 
     List<Integer> knapsack;
 
-    public KnapsackResult(){
-        profit = 0.0;
-        weight = 0.0;
-        knapsack = new ArrayList<>();
+    public KnapsackResult(double profit, double weight, List<Integer> knapsack) {
+        this.profit = profit;
+        this.weight = weight;
+        this.knapsack = knapsack;
     }
 
     public double getProfit() {
@@ -30,8 +30,5 @@ public class KnapsackResult {
     public List<Integer> getKnapsack(){
         return knapsack;
     }
-
-
-
 
 }
