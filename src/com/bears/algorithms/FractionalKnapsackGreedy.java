@@ -18,56 +18,57 @@ public class FractionalKnapsackGreedy implements IKnapsackSolver {
      * a fraction of the next highest ratio item will be taken in added to the total
      * @param weightLimit the max capacity of the items combined weight
      * @param pairings array of an items weight and value
-     * @return item pairing that can be added
+     * @return total profit and total weights
      */
     public KnapsackResult solveKnapsackProblem(int weightLimit, Pair[] pairings) {
-        //will hold each pair
-        KnapsackResult output = new KnapsackResult();
+        //holds weights of items taken
+        List<Integer> weights = new LinkedList<>();
+        //treemap to hold ratios with corresponding pair
+        TreeMap<Double, LinkedList<Pair>> ratios = new TreeMap<>();
         int currentWeight = 0;
+        double totProfit = 0;
         int size = pairings.length;
 
-        //Treeset to hold the ratio's of each item in a descending order
-        TreeSet<Double> itemRatios = new TreeSet<>();
-        //holds the ratios in an array list unsorted, to get the index of the first instance the ratio appears
-        ArrayList<Double> ratioIndex = new ArrayList<>();
         //loops through each pair and calculates the ratio and adds it to a tree set and array list
         for(int i = 0; i < size; i++){
             double ratio  = Math.round(((double)pairings[i].getProfit() / (double)pairings[i].getWeight())*100)/100.0;
-            itemRatios.add(ratio);
-            ratioIndex.add(i, ratio);
+            if(!ratios.containsKey(ratio)) {
+                ratios.put(ratio, new LinkedList<>());
+            }
+            ratios.get(ratio).add(pairings[i]);
         }
 
-        //iterator is then used to iterate through each item
-        Iterator ratios = itemRatios.descendingIterator();
-        //checks if the capacity has been reached and there are any items left
-        while(ratios.hasNext() && currentWeight != weightLimit){
+        Iterator ratioIterator = ratios.descendingKeySet().iterator();
+
+        //checks if capacity has been reached and if there are items remaining
+        while(ratioIterator.hasNext() && currentWeight != weightLimit){
             //holds the current ratio
-            double current = (double) ratios.next();
-            //if there are multiple items with the same ratio, as many will be taken w/o exceeding the capacity
-            while(ratioIndex.contains(current) && currentWeight != weightLimit) {
-                //finds the index of the item with the ratio
-                int index = ratioIndex.indexOf(current);
-                //gets the weight  of the item
-                int itemWeight = pairings[index].getWeight();
-                //checks if the next item exceeds the capacity
-                if (currentWeight + itemWeight < weightLimit) {
-                    //if it does not exceed, the item can be taken
+            double current = (double) ratioIterator.next();
+            //if there are multiple items that share the same ratio, as many will be taken w/o exceeding the capacity
+            while(!ratios.get(current).isEmpty() && currentWeight != weightLimit){
+                //variables to hold the profit and weight of the current item
+                double itemProfit = ratios.get(current).getFirst().getProfit();
+                int itemWeight = ratios.get(current).getFirst().getWeight();
+                //checks if adding the item will exceed the weight limit
+                if(currentWeight + itemWeight < weightLimit){
+                    //if it doesn't, add to the profits and weight to total
+                    totProfit += itemProfit;
                     currentWeight += itemWeight;
-                    output.addPairing(pairings[index]);
-                } else {
-                    //if it exceeds the capacity, only a portion of the item is taken
-                    //remaining capacity
+                    weights.add(itemWeight);
+                    //removes the item
+                    ratios.get(current).removeFirst();
+                }else{
+                    //otherwise take a portion of the current item based on the remaining weight
                     int remainingWeight = weightLimit - currentWeight;
-                    //the amount of the item that can be taken
-                    double value = current * remainingWeight;
+                    //calculates how much can be added
+                    double profit = current * remainingWeight;
                     currentWeight += remainingWeight;
-                    output.addPairing(remainingWeight, (int) value);
+                    totProfit += profit;
+                    weights.add(remainingWeight);
                 }
-                //the ratio at current index is not removed but set to null
-                //prevents the same item from being taken if there are multiple items with the same ratio
-                ratioIndex.set(index, null);
             }
         }
+        KnapsackResult output = new KnapsackResult(totProfit,currentWeight, weights);
         return output;
     }
 }
