@@ -7,7 +7,7 @@ import com.bears.util.Pair;
 import java.util.ArrayList;
 
 public class FractionalKnapsackBruteForce implements IKnapsackSolver {
-    String name = "01 Brute Force";
+    String name = "Fractional Brute Force";
 
     public String getSolverName() {
         return name;
@@ -28,10 +28,10 @@ public class FractionalKnapsackBruteForce implements IKnapsackSolver {
         int iteration = 1;
         int[] permutationWord = new int[pairings.length];
 
-        int highestValue = 0;
+        double highestValue = 0;
 
-        int currentCapacity = 0;
-        int currentValue = 0;
+        double currentCapacity = 0;
+        double currentValue = 0;
         ArrayList<Integer> currentWeights = new ArrayList<Integer>();
 
         // check to see if we have finished all permutations and if not continue checking next against the highest

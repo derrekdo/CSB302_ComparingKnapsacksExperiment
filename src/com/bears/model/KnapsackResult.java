@@ -10,7 +10,6 @@ public class KnapsackResult {
 
     double profit;
     double weight;
-
     List<Integer> knapsack;
 
     public KnapsackResult(double profit, double weight, List<Integer> knapsack) {
@@ -31,4 +30,16 @@ public class KnapsackResult {
         return knapsack;
     }
 
+    @Override
+    public String toString() {
+        return "KnapsackResult{" +
+                "profit=" + profit +
+                ", weight=" + weight +
+                ", knapsack=" + knapsack +
+                '}';
+    }
+
+    public void printResult(){
+        System.out.println(this);
+    }
 }

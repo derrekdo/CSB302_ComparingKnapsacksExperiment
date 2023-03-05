@@ -10,7 +10,6 @@ public class FileReader {
     public FileReader(String inputDirectory){
         this.inputDirectory = inputDirectory;
         testConditions = new LinkedList<>();
-        System.out.println("hello");
         File[] files = new File(inputDirectory).listFiles(file -> file.getName().endsWith("csv"));
 
         Arrays.stream(files).filter(File::isFile).forEach(this::process);
@@ -30,11 +29,9 @@ public class FileReader {
         try {
             Scanner scanner = new Scanner(file);
             while(scanner.hasNextLine() && numberOfLines < 3){
-
                 String line = scanner.nextLine();
                 readInputs.add(line);
                 numberOfLines++;
-
             }
 
         } catch (Exception e) {
@@ -70,7 +67,6 @@ public class FileReader {
     }
 
     public static void main(String[] args) {
-        System.out.println("hello world");
         FileReader reader = new FileReader("input");
         List<TestCondition> l1 = reader.getTestConditions();
         for (TestCondition test: l1){

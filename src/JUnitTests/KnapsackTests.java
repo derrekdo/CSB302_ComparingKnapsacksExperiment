@@ -1,9 +1,6 @@
 package JUnitTests;
 
-import com.bears.algorithms.FractionalKnapsackGreedy;
-import com.bears.algorithms.ZeroOneKnapsackBruteForce;
-import com.bears.algorithms.ZeroOneKnapsackDynamicProgramming;
-import com.bears.algorithms.ZeroOneKnapsackGreedy;
+import com.bears.algorithms.*;
 import com.bears.model.IKnapsackSolver;
 import com.bears.model.KnapsackResult;
 import com.bears.util.Pair;
@@ -191,6 +188,53 @@ public class KnapsackTests {
         System.out.println("\n----------- START | Fractional Greedy Test -----------");
 
         solverList.add(new FractionalKnapsackGreedy());
+        createPairs(weights, values, pairing);
+        for(IKnapsackSolver solver : solverList){
+            result = solver.solveKnapsackProblem(9, pairing);
+            totWeight = result.getWeight();
+            totProfit = result.getProfit();
+        }
+
+        System.out.println("Test 1:");
+        System.out.printf("Expected Weight: %.2f      Actual Weight: %.2f", expectedWeight1, totWeight);
+        System.out.printf("\nExpected Profit: %.2f     Actual Profit: %.2f", fracExpectedProfit1, totProfit);
+        assertEquals(expectedWeight1, totWeight);
+        assertEquals(fracExpectedProfit1, totProfit);
+
+        createPairs(fileW, fileV, filePairs);
+        for(IKnapsackSolver solver : solverList){
+            result = solver.solveKnapsackProblem(100, filePairs);
+            totWeight = result.getWeight();
+            totProfit = result.getProfit();
+        }
+
+        System.out.println("\n\nTest 2:");
+        System.out.printf("Expected Weight: %.2f     Actual Weight: %.2f", fracExpectedWeight2, totWeight);
+        System.out.printf("\nExpected Profit: %.2f    Actual Profit: %.2f", fracExpectedProfit2, totProfit);
+        assertEquals(fracExpectedWeight2, totWeight);
+        assertEquals(fracExpectedProfit2, totProfit);
+
+        createPairs(greedyW, greedyV, greedyPairs);
+        for(IKnapsackSolver solver : solverList){
+            result = solver.solveKnapsackProblem(10, greedyPairs);
+            totWeight = result.getWeight();
+            totProfit = result.getProfit();
+        }
+
+        System.out.println("\n\nTest 3:");
+        System.out.printf("Expected Weight: %.2f     Actual Weight: %.2f", expectedWeight3, totWeight);
+        System.out.printf("\nExpected Profit: %.2f     Actual Profit: %.2f", expectedProfit3, totProfit);
+        assertEquals(expectedWeight3, totWeight);
+        assertEquals(expectedProfit3, totProfit);
+
+        System.out.println("\n----------- END | Fractional Greedy Test -----------");
+    }
+
+    @Test
+    void testFracBruteForce(){
+        System.out.println("\n----------- START | Fractional Brute Force Test -----------");
+
+        solverList.add(new FractionalKnapsackBruteForce());
         createPairs(weights, values, pairing);
         for(IKnapsackSolver solver : solverList){
             result = solver.solveKnapsackProblem(9, pairing);
