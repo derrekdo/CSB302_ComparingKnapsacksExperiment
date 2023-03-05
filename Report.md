@@ -29,17 +29,17 @@ It's a little difficult for me to understand why this works though because I don
 ## Fractional Knapsack (BruteForce)
 This naive approach takes factorial time compare with dynamic programming which in turns take linear time.  The brute force approach takes extraordinatory amount of time because it needs to process a list of permutations that is generated from input data.  It took me a while to read to realize that in order of process matters. For example, assume we have an input of 3 items and a weight limit of 6.
 
-Item 1- 3 lb for total profit of 3
+Item 1: 3 lb for total profit of 3
 
-Item 2- 2 lb for total profit of 3
+Item 2: 2 lb for total profit of 3
 
-Item 3 - 2 lb for total of profit of 5
+Item 3: 2 lb for total of profit of 5
 
 If we add item 1, item 2 and item 3 to the knapsack in the row, maximum profit would be 3 + 3 + 5/2 = 8.5.
 
 If we add item 1, item 3 then item 2 to the knapsack in that order, maximum profit would be 3 + 5 + 3/2 = 9.5.
 
-In summary, in this case, the order (the premutations matter here). The process time would factorial of the length of the input.
+In summary, in this case, the order (the premutations matter here). The process time would factorial of the length of the input, which would even longer than the processing time obtained here.
 
 Unforunately this is a point that took me a while to realize while to trying to reconcile the different between the results obtain between this algorithm and that result obtained by using dynamic programming.  Because I mistakenly use combination rather permutations, the results is similiar but not exactly as one would with using dynamic programming.
 
