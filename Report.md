@@ -30,7 +30,9 @@ It's a little difficult for me to understand why this works though because I don
 This naive approach takes factorial time compare with dynamic programming which in turns take linear time.  The brute force approach takes extraordinatory amount of time because it needs to process a list of permutations that is generated from input data.  It took me a while to read to realize that in order of process matters. For example, assume we have an input of 3 items and a weight limit of 6.
 
 Item 1- 3 lb for total profit of 3
+
 Item 2- 2 lb for total profit of 3
+
 Item 3 - 2 lb for total of profit of 5
 
 If we add item 1, item 2 and item 3 to the knapsack in the row, maximum profit would be 3 + 3 + 5/2 = 8.5.
