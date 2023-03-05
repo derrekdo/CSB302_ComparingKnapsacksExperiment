@@ -1,6 +1,7 @@
 package com.bears.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import com.bears.util.Pair;
@@ -37,7 +38,7 @@ public class TestCondition {
         return "TestCondition{" +
                 "weightCapacity=" + weightCapacity +
                 ", knapsackNumber=" + knapsackNumber +
-                ", weightProfitMapping=" + weightProfitMapping +
+                ", Number of items=" + weightProfitMapping.length +
                 '}';
     }
 }
