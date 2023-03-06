@@ -8,11 +8,13 @@ import com.bears.util.Pair;
 import com.bears.util.StopWatch;
 import com.bears.util.TestCondition;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         ArrayList<IKnapsackSolver> solverList = new ArrayList<IKnapsackSolver>();
         solverList.add(new ZeroOneKnapsackBruteForce());
@@ -25,6 +27,11 @@ public class Main {
         List<TestCondition> conditions = reader.getTestConditions();
 
         for (IKnapsackSolver solver : solverList){
+            String fileName = solver.getSolverName();
+            FileWriter csvFile = new FileWriter(fileName + ".csv");
+            String headerLine = "Algorithm: " + fileName + ",";
+            csvFile.write(headerLine + "\n");
+            String dataLine = "";
             for (TestCondition condition : conditions){
                 StopWatch stopWatch = new StopWatch();
                 System.out.println(solver.getSolverName());
@@ -36,7 +43,12 @@ public class Main {
                 System.out.println("Time is " + stopWatch.getDuration() + " microseconds");
                 System.out.println();
 
+                dataLine += condition.getWeightProfitMapping().length + ",";
+                dataLine += stopWatch.getDuration() + "\n";
+                csvFile.write(dataLine);
+                dataLine = "";
             }
+            csvFile.close();
         }
 
     }
