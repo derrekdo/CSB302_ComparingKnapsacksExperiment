@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class FractionalKnapsackBruteForce implements IKnapsackSolver {
     String name = "Fractional Brute Force";
-
     public String getSolverName() {
         return name;
     }
@@ -73,8 +72,6 @@ public class FractionalKnapsackBruteForce implements IKnapsackSolver {
         }
 
         return new KnapsackResult(highestValue, currentCapacity, finalWeights);
-
-
     }// O(2^n) because permutations = 2 ^ number of items
 
     /**
