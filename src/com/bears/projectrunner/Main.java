@@ -35,6 +35,7 @@ public class Main {
                 result.printResult();
                 System.out.println("Time is " + stopWatch.getDuration() + " microseconds");
                 System.out.println();
+
             }
         }
 
