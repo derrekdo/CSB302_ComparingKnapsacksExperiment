@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class KnapsackResult {
-
     double profit;
     double weight;
     List<Integer> knapsack;

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class FractionalKnapsackBruteForce implements IKnapsackSolver {
     String name = "Fractional Brute Force";
-
     public String getSolverName() {
         return name;
     }
@@ -23,8 +22,7 @@ public class FractionalKnapsackBruteForce implements IKnapsackSolver {
      */
     public KnapsackResult solveKnapsackProblem(int weightLimit, Pair[] pairings) {
 
-        KnapsackResult output = new KnapsackResult();
-
+        ArrayList<Integer> finalWeights = new ArrayList<>();
         int iteration = 1;
         int[] permutationWord = new int[pairings.length];
 
@@ -32,8 +30,7 @@ public class FractionalKnapsackBruteForce implements IKnapsackSolver {
 
         double currentCapacity = 0;
         double currentValue = 0;
-        ArrayList<Integer> currentItems = new ArrayList<Integer>();
-        ArrayList<Integer> bestItems = new ArrayList<Integer>();
+        ArrayList<Integer> currentWeights = new ArrayList<Integer>();
 
         // check to see if we have finished all permutations and if not continue checking next against the highest
         while (GenerateNextPermutation(permutationWord, iteration)) {
@@ -41,7 +38,7 @@ public class FractionalKnapsackBruteForce implements IKnapsackSolver {
             //reset current values for the next iteration
             currentCapacity = 0;
             currentValue = 0;
-            currentItems.clear();
+            currentWeights.clear();
 
             /*
              Go through the word and check to see if each bit is a 1 or a 0. if it's a 1 then add the corresponding
@@ -55,27 +52,26 @@ public class FractionalKnapsackBruteForce implements IKnapsackSolver {
                     if (currentCapacity + pairings[i].getWeight() <= weightLimit) {
                         currentCapacity += pairings[i].getWeight();
                         currentValue += pairings[i].getProfit();
-                        currentItems.add(i + 1);
+                        currentWeights.add(pairings[i].getWeight());
                     }else if (currentCapacity < weightLimit){
                         double weightDifference = weightLimit - currentCapacity;
                         double ratio  = Math.round(((double)pairings[i].getProfit() / (double)pairings[i].getWeight())*100)/100.0;
                         currentValue += weightDifference * ratio;
-                        currentValue = weightLimit;
-                        currentItems.add(i + 1);
+                        currentCapacity += weightDifference;
+                        currentWeights.add(pairings[i].getWeight());
                     }
                 }
-            }//if the current iteration is better than the highest recorded then replace it
+            }
             if (currentCapacity <= weightLimit && currentValue > highestValue) {
 
                 highestValue = currentValue;
-                bestItems.clear();
-                bestItems.addAll(currentItems);
+                finalWeights.clear();
+                finalWeights.addAll(currentWeights);
             }
             iteration++; // increment the iterator so we can exit/continue the loop
         }
 
-
-        return output;
+        return new KnapsackResult(highestValue, currentCapacity, finalWeights);
     }// O(2^n) because permutations = 2 ^ number of items
 
     /**
@@ -105,5 +101,5 @@ public class FractionalKnapsackBruteForce implements IKnapsackSolver {
             }
         }
         return true;
-    }//O(n)
+    }
 }
