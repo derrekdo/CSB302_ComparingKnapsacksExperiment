@@ -45,7 +45,8 @@ In summary, in this case, the order (the premutations matter here). The process 
 
 Unforunately this is a point that took me a while to realize while to trying to reconcile the different between the results obtain between this algorithm and that result obtained by using dynamic programming.  Because I mistakenly use combination rather permutations, the results is similiar but not exactly as one would with using dynamic programming.
 
-
+## Fractional Knapsack (Greedy)
+For this algorithm, I was able to make it myself without using resources that can guide me through it; I mainly approached it on how I would do the problem by hand, because of that this algorithm went through multiple changes and revisions. The biggest problem that occured while making it was figuring out how to sort the items based on the ratios as they were two different references in our program layout; I was able to resolve this problem by using a tree map, as storing the ratios as keys would always sort them and it can keep references to which pairs correspond to that ratio. Moving on, the expected runtime outcome of this algorithm met my expectations, with it being able to run much quicker than everyother algorithm except for the zero one greedy algorithm. Since the fractional knapsack need to calculate all the ratios and and items until the max weight it reach it is expected to take longer than the zero one algorithm as it's results are always simply taking the highest profits.
 
 
 
